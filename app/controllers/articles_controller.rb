@@ -1,6 +1,16 @@
 class ArticlesController < ApplicationController
   include ArticlesHelper
 
+  before_action :require_login, only: [:new, :create, :edit, :update]
+
+  def require_login
+    unless current_user
+      redirect_to root_path
+      flash.notice = "You can't do that!"
+      return false
+    end
+  end
+
   def index
     @articles = Article.all
   end

@@ -1,4 +1,13 @@
 class TagsController < ApplicationController
+  before_action :require_login, only: [:destroy]
+
+  def require_login
+    unless current_user
+      redirect_to root_path
+      flash.notice = "You can't do that!"
+      return false
+    end
+  end
 
   def index
     @tag = Tag.all
